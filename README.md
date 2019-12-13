@@ -4,7 +4,7 @@ Thank you for taking the time to face this coding challenge.
 It should take approximately one hour to complete this challenge.
 _Use Typescript code to solve these challenges._
 If you need to look up something for this, mark it clearly.
-Inform aline.carmelini@freighthub.com as soon as you are done.
+Inform codingchallenge@freighthub.com as soon as you are done.
 Good luck!
 
 Task: Write a class that implements `ShipmentUpdateListenerInterface` from `challenge.ts` file.
