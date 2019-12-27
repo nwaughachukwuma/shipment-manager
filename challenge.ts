@@ -29,3 +29,18 @@ class ShipmentSearchIndex {
 interface ShipmentUpdateListenerInterface {
     receiveUpdate(id: string, shipmentData: any)
 }
+
+// My solution starts here @17:50 GMT
+class ShipmentUpdate implements ShipmentUpdateListenerInterface {
+
+    shipmentSI: any
+    constructor() {
+        this.shipmentSI = new ShipmentSearchIndex()
+    }
+
+    async receiveUpdate(id: string, shipmentData: any) {
+        // effect a defined delay of 1s to avoid concurrency of operations
+        await sleep(1000)
+        return await this.shipmentSI.updateShipment(id, shipmentData) 
+    }
+}
