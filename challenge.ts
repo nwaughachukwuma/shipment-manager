@@ -27,20 +27,66 @@ class ShipmentSearchIndex {
 
 // Implementation needed
 interface ShipmentUpdateListenerInterface {
-    receiveUpdate(id: string, shipmentData: any)
+    receiveUpdate(id: string, shipmentData: any): any
 }
 
-// My solution starts here @17:50 GMT
 class ShipmentUpdate implements ShipmentUpdateListenerInterface {
-
-    shipmentSI: any
+    
+    shipmentSI: ShipmentSearchIndex
     constructor() {
-        this.shipmentSI = new ShipmentSearchIndex()
+        this.shipmentSI = new ShipmentSearchIndex();
     }
 
     async receiveUpdate(id: string, shipmentData: any) {
-        // effect a defined delay of 1s to avoid concurrency of operations
-        await sleep(1000)
-        return await this.shipmentSI.updateShipment(id, shipmentData) 
+        try {
+            // check that the shipment with :id has not already been processed
+            if (ShipmentStore.has(id)) {
+                console.log(`Shipment:${id} has already been processed`)
+                return
+            }
+            ShipmentStore.push(id);
+            const processTime = await this.shipmentSI.updateShipment(id, shipmentData);
+        } catch (error) {
+            console.warn('error updating shipments ...');
+            console.error(error.message)
+        } finally {
+           console.log('store state :=>>', ShipmentStore.data())
+        }
+        return
+    }
+}
+
+/**
+ * Make a Shipment store to save processed shipments
+ */
+class ShipmentStore {
+    static store: string[] = [];
+    /**
+     * save a shipment in the store using its id
+     * @param {string} id store id  
+     */
+    static push(id: string) {
+        this.store.push(id)
+    }
+
+    /**
+     * remove a shipment from store
+     * @param {string} id store id  
+     */
+    static splice(id: string): string[] {
+        const shipmentId = this.store.indexOf(id);
+        if (shipmentId)  return this.store.splice(shipmentId, 1)
+    }
+
+    /**
+     * check whether shipment exist in the store
+     * @param {string} id store id  
+     */
+    static has(id: string): boolean {
+        return this.store.includes(id)
+    }
+
+    static data(): string[] {
+      return this.store;
     }
 }
