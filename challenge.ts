@@ -44,13 +44,14 @@ class ShipmentUpdate implements ShipmentUpdateListenerInterface {
                 console.log(`Shipment:${id} has already been processed`)
                 return
             }
-            ShipmentStore.push(id);
-            const processTime = await this.shipmentSI.updateShipment(id, shipmentData);
+            ShipmentStore.put(id);
+            await this.shipmentSI.updateShipment(id, shipmentData);
         } catch (error) {
             console.warn('error updating shipments ...');
             console.error(error.message)
         } finally {
-           console.log('store state :=>>', ShipmentStore.data())
+            console.log('shipment data :=>>', id, shipmentData)
+            console.log('store state :=>>', ShipmentStore.data())
         }
         return
     }
@@ -65,7 +66,7 @@ class ShipmentStore {
      * save a shipment in the store using its id
      * @param {string} id store id  
      */
-    static push(id: string) {
+    static put(id: string) {
         this.store.push(id)
     }
 
