@@ -55,6 +55,7 @@ class ShipmentUpdate implements ShipmentUpdateListenerInterface {
 function CheckShipmentStore() {
     return function (target: Object, key: string | symbol, descriptor: PropertyDescriptor) {
         const original = descriptor.value;
+        
         descriptor.value = function (...args: any[]) {
             const id = args[0];
             if (ShipmentStore.has(id)) {
