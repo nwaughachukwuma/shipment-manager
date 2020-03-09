@@ -1,3 +1,15 @@
+/**
+ | Solution to Pay-Pay dev challenge
+ | ----------------------------------
+ | Uses TypeScript Decorators to check for
+ | the existence of already processed 
+ | payloads objects in the store. 
+ | Feel free to make a PR with a more
+ | efficient way to implement this.
+ |
+ | You can run it here https://repl.it/repls/LimegreenIdioticMisrac
+ */
+
 async function sleep(ms: number) {
     return new Promise((resolve, reject) => {
         setTimeout(() => resolve(), ms)
@@ -30,9 +42,12 @@ interface ShipmentUpdateListenerInterface {
     receiveUpdate(id: string, shipmentData: any): any
 }
 
+/**
+ * My implementation starts here
+ */
 class ShipmentUpdate implements ShipmentUpdateListenerInterface {
 
-    shipmentSI: ShipmentSearchIndex
+    shipmentSI: ShipmentSearchIndex;
     constructor() {
         this.shipmentSI = new ShipmentSearchIndex();
     }
