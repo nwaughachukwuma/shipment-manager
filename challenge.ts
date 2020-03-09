@@ -1,5 +1,5 @@
 /**
- | Solution to Pay-Pay dev challenge
+ | A simple shipment manager
  | ----------------------------------
  | Uses TypeScript Decorators to check for
  | the existence of already processed 
